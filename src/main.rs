@@ -1,3 +1,5 @@
+mod ray_tracing;
+use ray_tracing::vec3::*;
 
 fn header(width: i32, height: i32) -> String {
     format!("P3\n{width} {height}\n255").into()
