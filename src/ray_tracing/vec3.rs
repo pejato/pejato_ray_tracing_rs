@@ -1,39 +1,48 @@
-use std::ops::{Add, Sub};
+use auto_ops::{impl_op, impl_op_ex};
 
+#[derive(Clone, Copy)]
 pub struct Vec3 {
-    pub a: i32,
-    pub b: i32,
-    pub c: i32,
+    pub a: f32,
+    pub b: f32,
+    pub c: f32,
 }
 
 impl Vec3 {
-    pub fn new(a: i32, b: i32, c: i32) -> Self {
+    pub fn new(a: f32, b: f32, c: f32) -> Self {
         Self {
             a, b, c
         }
     }
-}
 
-impl Add for Vec3 {
-    type Output = Self;
+    pub fn magnitude(self) -> f32 {
+        self.dot(self).summed()
+    }
 
-    fn add(self, rhs: Self) -> Self::Output {
+    pub fn summed(self) -> f32 {
+        self.a + self.b + self.c
+    }
+
+    pub fn dot(self, rhs: Vec3) -> Self {
         Self {
-            a: self.a + rhs.a,
-            b: self.b + rhs.b,
-            c: self.c + rhs.c
+            a: self.a * rhs.a,
+            b: self.b * rhs.b,
+            c: self.c * rhs.c,
         }
     }
 }
 
-impl Sub for Vec3 {
-    type Output = Self;
+impl_op_ex!(+ |lhs: Vec3, rhs: Vec3| -> Vec3 { Vec3::new(lhs.a + rhs.a, lhs.b + rhs.b, lhs.c + rhs.c) });
 
-    fn sub(self, rhs: Self) -> Self::Output {
-        Self {
-            a: self.a - rhs.a,
-            b: self.b - rhs.b,
-            c: self.c - rhs.c
-        }
-    }
-}
+impl_op!(+= |lhs: &mut Vec3, rhs: Vec3| { *lhs = *lhs + rhs; });
+
+impl_op_ex!(- |lhs: Vec3, rhs: Vec3| -> Vec3 { Vec3::new(lhs.a - rhs.a, lhs.b - rhs.b, lhs.c - rhs.c) });
+
+impl_op!(-= |lhs: &mut Vec3, rhs: Vec3| { *lhs = *lhs - rhs; });
+
+impl_op_ex!(* |lhs: Vec3, rhs: f32| -> Vec3 { Vec3::new(lhs.a * rhs, lhs.b * rhs, lhs.c * rhs) });
+
+impl_op!(*= |lhs: &mut Vec3, rhs: f32| { *lhs = *lhs * rhs; });
+
+impl_op_ex!(/ |lhs: Vec3, rhs: f32| -> Vec3 { Vec3::new(lhs.a / rhs, lhs.b / rhs, lhs.c / rhs) });
+
+impl_op!(/= |lhs: &mut Vec3, rhs: f32| { *lhs = *lhs / rhs; });
