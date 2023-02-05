@@ -1,5 +1,5 @@
 #[cfg(test)]
-use super::{Vec3, Color};
+use super::{Color, Vec3};
 #[cfg(test)]
 use crate::assert_vec_approx_eq;
 

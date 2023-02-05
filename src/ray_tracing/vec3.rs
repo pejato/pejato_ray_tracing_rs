@@ -63,7 +63,9 @@ impl Display for Vec3 {
 
 // MARK: - Operators
 
-impl_op_ex_commutative!(*|lhs: Vec3, rhs: f32| -> Vec3 { Vec3::new(lhs.x * rhs, lhs.y * rhs, lhs.z * rhs) });
+impl_op_ex_commutative!(*|lhs: Vec3, rhs: f32| -> Vec3 {
+    Vec3::new(lhs.x * rhs, lhs.y * rhs, lhs.z * rhs)
+});
 impl_op_ex!(*= |lhs: &mut Vec3, rhs: f32| { *lhs = *lhs * rhs; });
 impl_op_ex!(/ |lhs: Vec3, rhs: f32| -> Vec3 { Vec3::new(lhs.x / rhs, lhs.y / rhs, lhs.z / rhs) });
 impl_op_ex!(/= |lhs: &mut Vec3, rhs: f32| { *lhs = *lhs / rhs; });
