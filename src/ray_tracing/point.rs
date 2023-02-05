@@ -23,7 +23,9 @@ impl Point {
 
 // MARK: - Operators
 
-impl_op_ex!(*|lhs: Point, rhs: f32| -> Point { Point::new(lhs.0.a * rhs, lhs.0.b * rhs, lhs.0.c * rhs) });
+impl_op_ex!(*|lhs: Point, rhs: f32| -> Point {
+    Point::new(lhs.0.a * rhs, lhs.0.b * rhs, lhs.0.c * rhs)
+});
 impl_op!(*= |lhs: &mut Point, rhs: f32| { *lhs = *lhs * rhs; });
 impl_op_ex!(/ |lhs: Point, rhs: f32| -> Point { Point::new(lhs.0.a / rhs, lhs.0.b / rhs, lhs.0.c / rhs) });
 impl_op!(/= |lhs: &mut Point, rhs: f32| { *lhs = *lhs / rhs; });
