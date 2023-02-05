@@ -31,8 +31,12 @@ impl Vec3 {
         f32::sqrt(self.dot(self))
     }
 
-    pub fn summed(self) -> f32 {
-        self.a + self.b + self.c
+    pub fn cross(self, rhs: Vec3) -> Vec3 {
+        Self::new(
+            self.b * rhs.c - self.c * rhs.b,
+            self.c * rhs.a - self.a * rhs.c,
+            self.a * rhs.b - self.b * rhs.a,
+        )
     }
 
     pub fn dot(self, rhs: Vec3) -> f32 {
@@ -40,11 +44,11 @@ impl Vec3 {
     }
 
     pub fn mul_elts(self, rhs: Vec3) -> Self {
-        Self {
-            a: self.a * rhs.a,
-            b: self.b * rhs.b,
-            c: self.c * rhs.c,
-        }
+        Self::new(self.a * rhs.a, self.b * rhs.b, self.c * rhs.c)
+    }
+
+    pub fn summed(self) -> f32 {
+        self.a + self.b + self.c
     }
 }
 

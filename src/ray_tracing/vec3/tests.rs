@@ -33,8 +33,7 @@ mod method_tests {
 
     #[test]
     fn test_unit() {
-        let actual = Vec3::new(3.0, 9.0, f32::sqrt(10.0))
-            .unit();
+        let actual = Vec3::new(3.0, 9.0, f32::sqrt(10.0)).unit();
         let expected = Vec3::new(0.3, 0.9, 0.3162277660169838);
         assert_vec_approx_eq!(actual, expected);
     }
@@ -79,11 +78,12 @@ mod method_tests {
     }
 
     #[test]
-    fn test_summed() {
-        let expected = 2.0;
-        let vec = Vec3::new(1.0, -2.0, 3.0);
-        let actual = vec.summed();
-        assert_approx_eq!(actual, expected);
+    fn test_cross() {
+        let lhs = Vec3::new(1.0, 1.0, 1.0);
+        let rhs = Vec3::new(1.0, 0.0, 0.0);
+        let actual = lhs.cross(rhs);
+        let expected = Vec3::new(0.0, 1.0, -1.0);
+        assert_vec_approx_eq!(actual, expected);
     }
 
     #[test]
@@ -102,6 +102,14 @@ mod method_tests {
         let rhs = Vec3::new(2.0, 4.0, 6.0);
         let actual = lhs.mul_elts(rhs);
         assert_vec_approx_eq!(actual, expected);
+    }
+
+    #[test]
+    fn test_summed() {
+        let expected = 2.0;
+        let vec = Vec3::new(1.0, -2.0, 3.0);
+        let actual = vec.summed();
+        assert_approx_eq!(actual, expected);
     }
 }
 
