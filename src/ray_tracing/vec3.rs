@@ -1,11 +1,12 @@
 use std::fmt::Display;
 
 use auto_ops::{impl_op, impl_op_ex};
+use derive_more::{Add, AddAssign, Sub, SubAssign};
 mod tests;
 
 // MARK: - Data
 
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, Add, AddAssign, Sub, SubAssign)]
 pub struct Vec3 {
     pub a: f32,
     pub b: f32,
@@ -62,20 +63,7 @@ impl Display for Vec3 {
 
 // MARK: - Operators
 
-impl_op_ex!(+ |lhs: Vec3, rhs: Vec3| -> Vec3 { Vec3::new(lhs.a + rhs.a, lhs.b + rhs.b, lhs.c + rhs.c) });
-
-impl_op!(+= |lhs: &mut Vec3, rhs: Vec3| { *lhs = *lhs + rhs; });
-
-impl_op_ex!(-|lhs: Vec3, rhs: Vec3| -> Vec3 {
-    Vec3::new(lhs.a - rhs.a, lhs.b - rhs.b, lhs.c - rhs.c)
-});
-
-impl_op!(-= |lhs: &mut Vec3, rhs: Vec3| { *lhs = *lhs - rhs; });
-
 impl_op_ex!(*|lhs: Vec3, rhs: f32| -> Vec3 { Vec3::new(lhs.a * rhs, lhs.b * rhs, lhs.c * rhs) });
-
 impl_op!(*= |lhs: &mut Vec3, rhs: f32| { *lhs = *lhs * rhs; });
-
 impl_op_ex!(/ |lhs: Vec3, rhs: f32| -> Vec3 { Vec3::new(lhs.a / rhs, lhs.b / rhs, lhs.c / rhs) });
-
 impl_op!(/= |lhs: &mut Vec3, rhs: f32| { *lhs = *lhs / rhs; });

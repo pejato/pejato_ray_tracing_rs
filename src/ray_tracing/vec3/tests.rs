@@ -1,18 +1,9 @@
 #[cfg(test)]
 use super::Vec3;
 #[cfg(test)]
-use assert_approx_eq::*;
-
+use crate::assert_vec_approx_eq;
 #[cfg(test)]
-macro_rules! assert_vec_approx_eq {
-    ($lhs: ident, $rhs: ident) => {
-        use assert_approx_eq::assert_approx_eq;
-
-        assert_approx_eq!($lhs.a, $rhs.a);
-        assert_approx_eq!($lhs.b, $rhs.b);
-        assert_approx_eq!($lhs.c, $rhs.c);
-    };
-}
+use assert_approx_eq::*;
 
 // MARK: - Methods
 
