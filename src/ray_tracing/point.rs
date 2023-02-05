@@ -7,5 +7,3 @@ impl Point {
         Self(Vec3::new(r, g, b))
     }
 }
-
-// TODO: Define a (proc?) macro to automatically derive impl's defined on Vec3
