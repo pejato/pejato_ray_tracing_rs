@@ -5,6 +5,7 @@ mod tests;
 
 // MARK: - Data
 
+#[derive(Clone, Copy)]
 pub struct Ray {
     pub origin: Point,
     pub dir: Vec3,

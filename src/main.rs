@@ -7,10 +7,25 @@ fn header(width: i32, height: i32) -> String {
     format!("P3\n{width} {height}\n255")
 }
 
-fn ray_color(ray: &Ray) -> Color {
+fn ray_color(ray: Ray) -> Color {
+    if hit_sphere(Point::new(0.0, 0.0, -1.0), 0.5, ray) {
+        return Color::new(1.0, 0.0, 0.0);
+    }
     let unit_dir = ray.dir.unit();
     let t = 0.5 * (unit_dir.y + 1.0);
     (1.0 - t) * Color::new(1.0, 1.0, 1.0) + t * Color::new(0.5, 0.7, 1.0)
+}
+
+fn hit_sphere(center: Point, radius: f32, ray: Ray) -> bool {
+    // Equation of points on ray that are on sphere centered at C with radius r is:
+    // 𝑡^2*𝐛⋅𝐛 + 2𝑡*𝐛⋅(𝐀−𝐂) + (𝐀−𝐂)⋅(𝐀−𝐂) − 𝑟^2 = 0
+    // => discriminant = b^2 - 4*a*c
+    // if discriminant > 0 => there are solutions to the equation (possibly negative)
+    let shifted_center = Vec3::from(ray.origin - center);
+    let a = ray.dir.dot(ray.dir);
+    let b = 2.0 * ray.dir.dot(shifted_center);
+    let c: f32 = shifted_center.dot(shifted_center) - radius*radius;
+    b*b - 4.0*a*c > 0.0
 }
 
 fn main() {
@@ -39,7 +54,7 @@ fn main() {
                 origin,
                 Vec3::from(lower_left) + u * horizontal + v * vertical - Vec3::from(origin),
             );
-            let color = ray_color(&ray);
+            let color = ray_color(ray);
             println!("{color}");
         }
     }
