@@ -1,5 +1,5 @@
 use super::vec3::Vec3;
-use auto_ops::{impl_op, impl_op_ex, impl_op_ex_commutative};
+use auto_ops::{impl_op_ex, impl_op_ex_commutative};
 use derive_more::{Add, AddAssign, From, Into, Sub, SubAssign};
 
 mod tests;
