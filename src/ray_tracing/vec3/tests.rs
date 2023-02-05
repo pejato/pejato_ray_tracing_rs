@@ -14,9 +14,9 @@ mod method_tests {
     #[test]
     fn test_new() {
         let expected = Vec3 {
-            a: 1.0,
-            b: 2.0,
-            c: 3.0,
+            x: 1.0,
+            y: 2.0,
+            z: 3.0,
         };
         let actual = Vec3::new(1.0, 2.0, 3.0);
         assert_vec_approx_eq!(actual, expected);
@@ -33,7 +33,7 @@ mod method_tests {
     fn test_zero() {
         let expected = Vec3::new(0.0, 0.0, 0.0);
         let actual = Vec3::zero();
-        assert_approx_eq!(actual.a, expected.a);
+        assert_approx_eq!(actual.x, expected.x);
     }
 
     #[test]
@@ -160,9 +160,17 @@ mod operator_tests {
     }
 
     #[test]
-    fn test_scalar_mult() {
+    fn test_scalar_mult_left() {
         let (lhs, rhs) = (Vec3::new(1.0, 2.0, 3.0), 3.0);
         let actual = lhs * rhs;
+        let expected = Vec3::new(3.0, 6.0, 9.0);
+        assert_vec_approx_eq!(actual, expected);
+    }
+
+    #[test]
+    fn test_scalar_mult_right() {
+        let (lhs, rhs) = (Vec3::new(1.0, 2.0, 3.0), 3.0);
+        let actual = rhs * lhs;
         let expected = Vec3::new(3.0, 6.0, 9.0);
         assert_vec_approx_eq!(actual, expected);
     }

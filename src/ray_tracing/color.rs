@@ -1,8 +1,11 @@
 use super::vec3::Vec3;
+use auto_ops::{impl_op, impl_op_ex, impl_op_ex_commutative};
+use derive_more::{Add, AddAssign, Sub, SubAssign, From, Into};
 
 mod tests;
 
 // MARK: - Data
+#[derive(Copy, Clone, Add, AddAssign, Sub, SubAssign, From, Into)]
 pub struct Color(Vec3);
 
 // MARK: - Methods
@@ -19,6 +22,15 @@ impl std::fmt::Display for Color {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let &Color(vec) = self;
         let pixel = |flt: f32| (flt * 255.999).round() as i32;
-        write!(f, "{} {} {}", pixel(vec.a), pixel(vec.b), pixel(vec.c))
+        write!(f, "{} {} {}", pixel(vec.x), pixel(vec.y), pixel(vec.z))
     }
 }
+
+// MARK: - Operators
+
+impl_op_ex_commutative!(*|lhs: Color, rhs: f32| -> Color {
+    Color::new(lhs.0.x * rhs, lhs.0.y * rhs, lhs.0.z * rhs)
+});
+impl_op_ex!(*= |lhs: &mut Color, rhs: f32| { *lhs = *lhs * rhs; });
+impl_op_ex!(/ |lhs: Color, rhs: f32| -> Color { Color::new(lhs.0.x / rhs, lhs.0.y / rhs, lhs.0.z / rhs) });
+impl_op_ex!(/= |lhs: &mut Color, rhs: f32| { *lhs = *lhs / rhs; });

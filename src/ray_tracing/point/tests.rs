@@ -1,7 +1,7 @@
 #[cfg(test)]
 use super::*;
 #[cfg(test)]
-use crate::assert_point_approx_eq;
+use crate::assert_vec_approx_eq;
 
 #[cfg(test)]
 mod method_tests {
@@ -11,14 +11,14 @@ mod method_tests {
     fn test_new() {
         let actual = Point::new(2.0, 4.0, 6.0);
         let expected = Point(Vec3::new(2.0, 4.0, 6.0));
-        assert_point_approx_eq!(actual, expected);
+        assert_vec_approx_eq!(actual, expected);
     }
 
     #[test]
     fn test_zero() {
         let actual = Point::zero();
         let expected = Point(Vec3::zero());
-        assert_point_approx_eq!(actual, expected);
+        assert_vec_approx_eq!(actual, expected);
     }
 }
 
@@ -31,7 +31,7 @@ mod operator_tests {
         let (lhs, rhs) = (Point::new(1.0, 2.0, 3.0), Vec3::new(-1.0, -2.0, -3.0));
         let actual = lhs + rhs.into();
         let expected = Point::new(0.0, 0.0, 0.0);
-        assert_point_approx_eq!(actual, expected);
+        assert_vec_approx_eq!(actual, expected);
     }
 
     #[test]
@@ -40,7 +40,7 @@ mod operator_tests {
         lhs += rhs.into();
         let actual = lhs;
         let expected = Point::new(0.0, 0.0, 0.0);
-        assert_point_approx_eq!(actual, expected);
+        assert_vec_approx_eq!(actual, expected);
     }
 
     #[test]
@@ -48,7 +48,7 @@ mod operator_tests {
         let (lhs, rhs) = (Point::new(1.0, 2.0, 3.0), Vec3::new(-1.0, -2.0, -3.0));
         let actual = lhs - rhs.into();
         let expected = Point::new(2.0, 4.0, 6.0);
-        assert_point_approx_eq!(actual, expected);
+        assert_vec_approx_eq!(actual, expected);
     }
 
     #[test]
@@ -57,15 +57,23 @@ mod operator_tests {
         lhs -= rhs.into();
         let actual = lhs;
         let expected = Point::new(2.0, 4.0, 6.0);
-        assert_point_approx_eq!(actual, expected);
+        assert_vec_approx_eq!(actual, expected);
     }
 
     #[test]
-    fn test_scalar_mult() {
+    fn test_scalar_mult_left() {
         let (lhs, rhs) = (Point::new(1.0, 2.0, 3.0), 3.0);
         let actual = lhs * rhs;
         let expected = Point::new(3.0, 6.0, 9.0);
-        assert_point_approx_eq!(actual, expected);
+        assert_vec_approx_eq!(actual, expected);
+    }
+
+    #[test]
+    fn test_scalar_mult_right() {
+        let (lhs, rhs) = (Point::new(1.0, 2.0, 3.0), 3.0);
+        let actual = rhs * lhs;
+        let expected = Point::new(3.0, 6.0, 9.0);
+        assert_vec_approx_eq!(actual, expected);
     }
 
     #[test]
@@ -74,7 +82,7 @@ mod operator_tests {
         lhs *= rhs;
         let actual = lhs;
         let expected = Point::new(3.0, 6.0, 9.0);
-        assert_point_approx_eq!(actual, expected);
+        assert_vec_approx_eq!(actual, expected);
     }
 
     #[test]
@@ -82,7 +90,7 @@ mod operator_tests {
         let (lhs, rhs) = (Point::new(1.0, 2.0, 3.0), 3.0);
         let actual = lhs / rhs;
         let expected = Point::new(1.0 / 3.0, 2.0 / 3.0, 1.0);
-        assert_point_approx_eq!(actual, expected);
+        assert_vec_approx_eq!(actual, expected);
     }
 
     #[test]
@@ -91,6 +99,6 @@ mod operator_tests {
         lhs /= rhs;
         let actual = lhs;
         let expected = Point::new(1.0 / 3.0, 2.0 / 3.0, 1.0);
-        assert_point_approx_eq!(actual, expected);
+        assert_vec_approx_eq!(actual, expected);
     }
 }

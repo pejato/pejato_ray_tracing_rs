@@ -1,5 +1,5 @@
 use super::vec3::Vec3;
-use auto_ops::{impl_op, impl_op_ex};
+use auto_ops::{impl_op_ex, impl_op_ex_commutative};
 use derive_more::{Add, AddAssign, From, Into, Sub, SubAssign};
 
 mod tests;
@@ -23,9 +23,9 @@ impl Point {
 
 // MARK: - Operators
 
-impl_op_ex!(*|lhs: Point, rhs: f32| -> Point {
-    Point::new(lhs.0.a * rhs, lhs.0.b * rhs, lhs.0.c * rhs)
+impl_op_ex_commutative!(*|lhs: Point, rhs: f32| -> Point {
+    Point::new(lhs.0.x * rhs, lhs.0.y * rhs, lhs.0.z * rhs)
 });
-impl_op!(*= |lhs: &mut Point, rhs: f32| { *lhs = *lhs * rhs; });
-impl_op_ex!(/ |lhs: Point, rhs: f32| -> Point { Point::new(lhs.0.a / rhs, lhs.0.b / rhs, lhs.0.c / rhs) });
-impl_op!(/= |lhs: &mut Point, rhs: f32| { *lhs = *lhs / rhs; });
+impl_op_ex!(*= |lhs: &mut Point, rhs: f32| { *lhs = *lhs * rhs; });
+impl_op_ex!(/ |lhs: Point, rhs: f32| -> Point { Point::new(lhs.0.x / rhs, lhs.0.y / rhs, lhs.0.z / rhs) });
+impl_op_ex!(/= |lhs: &mut Point, rhs: f32| { *lhs = *lhs / rhs; });
