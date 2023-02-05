@@ -25,7 +25,7 @@ mod method_tests {
     #[test]
     fn test_unit() {
         let actual = Vec3::new(3.0, 9.0, f32::sqrt(10.0)).unit();
-        let expected = Vec3::new(0.3, 0.9, 0.3162277660169838);
+        let expected = Vec3::new(0.3, 0.9, 0.316_227_76);
         assert_vec_approx_eq!(actual, expected);
     }
 
@@ -113,7 +113,7 @@ mod display_tests {
     #[test]
     fn test_display() {
         let vec = Vec3::new(1.251, 4.421, 3.242);
-        let actual = format!("{}", vec);
+        let actual = format!("{vec}");
         let expected = "[1.251, 4.421, 3.242]";
         assert_eq!(actual, expected);
     }

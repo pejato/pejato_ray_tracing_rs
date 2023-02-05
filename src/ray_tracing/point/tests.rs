@@ -2,8 +2,6 @@
 use super::*;
 #[cfg(test)]
 use crate::assert_point_approx_eq;
-#[cfg(test)]
-use assert_approx_eq::assert_approx_eq;
 
 #[cfg(test)]
 mod method_tests {
