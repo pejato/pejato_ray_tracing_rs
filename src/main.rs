@@ -25,7 +25,13 @@ fn hit_sphere(center: Point, radius: f32, ray: Ray) -> bool {
     let a = ray.dir.dot(ray.dir);
     let b = 2.0 * ray.dir.dot(shifted_center);
     let c: f32 = shifted_center.dot(shifted_center) - radius*radius;
-    b*b - 4.0*a*c > 0.0
+    let discriminant = b*b - 4.0*a*c;
+    if  discriminant < 0.0 {
+        return false;
+    }
+    let solution_a = (-b + f32::sqrt(discriminant)) / (2.0 * a);
+    let solution_b = (-b - f32::sqrt(discriminant)) / (2.0 * b);
+    solution_a >= 0.0 || solution_b >= 0.0
 }
 
 fn main() {
