@@ -32,6 +32,21 @@ mod method_tests {
     }
 
     #[test]
+    fn test_unit() {
+        let actual = Vec3::new(3.0, 9.0, f32::sqrt(10.0))
+            .unit();
+        let expected = Vec3::new(0.3, 0.9, 0.3162277660169838);
+        assert_vec_approx_eq!(actual, expected);
+    }
+
+    #[test]
+    fn test_zero() {
+        let expected = Vec3::new(0.0, 0.0, 0.0);
+        let actual = Vec3::zero();
+        assert_approx_eq!(actual.a, expected.a);
+    }
+
+    #[test]
     fn test_magnitude_zero_vector() {
         let expected = 0.0;
         let vec = Vec3::new(0.0, 0.0, 0.0);
@@ -72,22 +87,6 @@ mod method_tests {
     }
 
     #[test]
-    fn test_mul_elts() {
-        let expected = Vec3::new(1.0 * 2.0, 3.0 * 4.0, 5.0 * 6.0);
-        let lhs = Vec3::new(1.0, 3.0, 5.0);
-        let rhs = Vec3::new(2.0, 4.0, 6.0);
-        let actual = lhs.mul_elts(rhs);
-        assert_vec_approx_eq!(actual, expected);
-    }
-
-    #[test]
-    fn test_zero() {
-        let expected = Vec3::new(0.0, 0.0, 0.0);
-        let actual = Vec3::zero();
-        assert_approx_eq!(actual.a, expected.a);
-    }
-
-    #[test]
     fn test_dot() {
         let expected = 1.0 * 2.0 + 3.0 * 4.0 + 5.0 * 6.0;
         let lhs = Vec3::new(1.0, 3.0, 5.0);
@@ -95,13 +94,21 @@ mod method_tests {
         let actual = lhs.dot(rhs);
         assert_approx_eq!(actual, expected);
     }
+
+    #[test]
+    fn test_mul_elts() {
+        let expected = Vec3::new(1.0 * 2.0, 3.0 * 4.0, 5.0 * 6.0);
+        let lhs = Vec3::new(1.0, 3.0, 5.0);
+        let rhs = Vec3::new(2.0, 4.0, 6.0);
+        let actual = lhs.mul_elts(rhs);
+        assert_vec_approx_eq!(actual, expected);
+    }
 }
 
 // MARK: - Display Impl
 
+#[cfg(test)]
 mod display_tests {
-    use std::fmt::{format, Debug};
-
     use super::*;
 
     #[test]

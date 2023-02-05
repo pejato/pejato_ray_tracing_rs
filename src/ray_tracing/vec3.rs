@@ -19,6 +19,10 @@ impl Vec3 {
         Self { a, b, c }
     }
 
+    pub fn unit(self) -> Self {
+        self / self.magnitude()
+    }
+
     pub fn zero() -> Self {
         Self::new(0.0, 0.0, 0.0)
     }
