@@ -32,14 +32,14 @@ fn intersection_points(center: Point, radius: f32, ray: Ray) -> Solutions {
     // if discriminant > 0 => there are solutions to the equation (possibly negative)
     let shifted_center = Vec3::from(ray.origin - center);
     let a = ray.dir.dot(ray.dir);
-    let b = 2.0 * ray.dir.dot(shifted_center);
+    let half_b = ray.dir.dot(shifted_center);
     let c: f32 = shifted_center.dot(shifted_center) - radius * radius;
-    let discriminant = b * b - 4.0 * a * c;
+    let discriminant = half_b * half_b - a * c;
     if discriminant < 0.0 {
         return (None, None);
     }
-    let solution_a = (-b - f32::sqrt(discriminant)) / (2.0 * a);
-    let solution_b = (-b + f32::sqrt(discriminant)) / (2.0 * b);
+    let solution_a = (-half_b - f32::sqrt(discriminant)) / a;
+    let solution_b = (-half_b + f32::sqrt(discriminant)) / a;
     (
         if solution_a >= 0.0 {
             Some(solution_a)
