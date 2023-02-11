@@ -1,6 +1,6 @@
 use std::fmt::Display;
 
-use auto_ops::{impl_op_ex, impl_op_ex_commutative};
+use auto_ops::{impl_op, impl_op_ex, impl_op_ex_commutative};
 use derive_more::{Add, AddAssign, Sub, SubAssign};
 mod tests;
 
@@ -66,6 +66,7 @@ impl Display for Vec3 {
 impl_op_ex_commutative!(*|lhs: Vec3, rhs: f32| -> Vec3 {
     Vec3::new(lhs.x * rhs, lhs.y * rhs, lhs.z * rhs)
 });
-impl_op_ex!(*= |lhs: &mut Vec3, rhs: f32| { *lhs = *lhs * rhs; });
 impl_op_ex!(/ |lhs: Vec3, rhs: f32| -> Vec3 { Vec3::new(lhs.x / rhs, lhs.y / rhs, lhs.z / rhs) });
+impl_op_ex!(*= |lhs: &mut Vec3, rhs: f32| { *lhs = *lhs * rhs; });
 impl_op_ex!(/= |lhs: &mut Vec3, rhs: f32| { *lhs = *lhs / rhs; });
+impl_op!(-|vec: Vec3| -> Vec3 { Vec3::new(-vec.x, -vec.y, -vec.z) });

@@ -38,6 +38,7 @@ fn intersection_points(center: Point, radius: f32, ray: Ray) -> Solutions {
     if discriminant < 0.0 {
         return (None, None);
     }
+    // This is the 'smaller' solution, in terms of t
     let solution_a = (-half_b - f32::sqrt(discriminant)) / a;
     let solution_b = (-half_b + f32::sqrt(discriminant)) / a;
     (
