@@ -2,7 +2,7 @@ mod ray_tracing;
 
 use ray_tracing::{color::*, hittable::Hittable, ray::Ray};
 
-use crate::ray_tracing::{point::Point, sphere::Sphere, vec3::Vec3};
+use crate::ray_tracing::{camera::Camera, point::Point, sphere::Sphere};
 
 fn header(width: i32, height: i32) -> String {
     format!("P3\n{width} {height}\n255")
@@ -39,16 +39,7 @@ fn main() {
 
     // Camera
 
-    let viewport_height = 2.0;
-    let viewport_width = aspect_ratio * viewport_height;
-    let focal_len = 1.0;
-    let origin = Point::zero();
-    let horizontal = Vec3::new(viewport_width, 0.0, 0.0);
-    let vertical = Vec3::new(0.0, viewport_height, 0.0);
-    let lower_left = origin
-        - (horizontal / 2.0).into()
-        - (vertical / 2.0).into()
-        - Vec3::new(0.0, 0.0, focal_len).into();
+    let camera = Camera::new();
 
     // Render
 
@@ -60,10 +51,7 @@ fn main() {
         for i in 0..image_width {
             let u = i as f32 / (image_width - 1) as f32;
             let v = j as f32 / (image_height - 1) as f32;
-            let ray = Ray::new(
-                origin,
-                Vec3::from(lower_left) + u * horizontal + v * vertical - Vec3::from(origin),
-            );
+            let ray = camera.ray_at(u, v);
             let color = ray_color(ray, world.as_slice());
             println!("{color}");
         }
