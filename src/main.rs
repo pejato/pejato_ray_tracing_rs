@@ -93,7 +93,7 @@ fn get_sampled_color(
     } else {
         (0..samples_per_pixel)
             .map(|_| {
-                let (di, dj) = (rng.gen_range(0.0..1.0), rng.gen_range(0.0..1.0));
+                let (di, dj) = (rng.gen_range(-0.5..0.5), rng.gen_range(-0.5..0.5));
                 to_color(i as f32 + di, j as f32 + dj)
             })
             .into_iter()

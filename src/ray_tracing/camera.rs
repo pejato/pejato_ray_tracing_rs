@@ -39,6 +39,8 @@ impl Camera {
     }
 
     pub fn ray_at(&self, horizontal_pct: f32, vertical_pct: f32) -> Ray {
+        let horizontal_pct = horizontal_pct.clamp(0.0, 1.0);
+        let vertical_pct = vertical_pct.clamp(0.0, 1.0);
         Ray::new(
             self.origin,
             Vec3::from(self.lower_left)
