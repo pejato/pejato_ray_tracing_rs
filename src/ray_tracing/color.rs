@@ -26,6 +26,37 @@ impl std::fmt::Display for Color {
     }
 }
 
+// MARK: - Averaging
+
+pub trait Averageable {
+    type Output;
+    fn averaged(self) -> Self::Output;
+}
+
+impl<Container> Averageable for Container
+where
+    Container: Iterator<Item = Color>,
+    Container: Sized,
+{
+    type Output = Color;
+
+    fn averaged(self) -> Self::Output {
+        let mut total = 0.0;
+        let summed = self
+            .into_iter()
+            .reduce(|acc, color| {
+                // self.into_iter().count() consumes self, which means I don't know how to get count before reducing.
+                // This is super gross but I don't feel like dealing with ownership problems
+                total += 1.0;
+                acc + color
+            })
+            .unwrap_or(Color::new(0.0, 0.0, 0.0));
+        // No div by 0's pls
+        let total = if total < f32::EPSILON { 1.0 } else { total };
+        summed / total
+    }
+}
+
 // MARK: - Operators
 
 impl_op_ex_commutative!(*|lhs: Color, rhs: f32| -> Color {
