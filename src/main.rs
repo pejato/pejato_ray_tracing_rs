@@ -56,16 +56,47 @@ fn main() {
     for j in (0..image_height).rev() {
         eprintln!("Lines remaining {j}");
         for i in 0..image_width {
-            let sampled_colors = (0..=samples_per_pixel).map(|_| {
-                let (di, dj) = (rng.gen_range(0.0..1.0), rng.gen_range(0.0..1.0));
-                let u = (i as f32 + di) / (image_width - 1) as f32;
-                let v = (j as f32 + dj) / (image_height - 1) as f32;
-                let ray = camera.ray_at(u, v);
-                ray_color(ray, world.as_slice())
-            });
-            let color = sampled_colors.averaged();
+            let color = get_sampled_color(
+                samples_per_pixel,
+                &mut rng,
+                i,
+                j,
+                image_width,
+                image_height,
+                &camera,
+                &world,
+            );
             println!("{color}");
         }
     }
     eprintln!("Fin");
+}
+
+fn get_sampled_color(
+    samples_per_pixel: i32,
+    rng: &mut StdRng,
+    i: i32,
+    j: i32,
+    image_width: i32,
+    image_height: i32,
+    camera: &Camera,
+    world: &Vec<Sphere>,
+) -> Color {
+    let to_color = |i: f32, j: f32| {
+        let u = i / (image_width - 1) as f32;
+        let v = j / (image_height - 1) as f32;
+        let ray = camera.ray_at(u, v);
+        ray_color(ray, world.as_slice())
+    };
+    if samples_per_pixel <= 1 {
+        to_color(i as f32, j as f32)
+    } else {
+        (0..samples_per_pixel)
+            .map(|_| {
+                let (di, dj) = (rng.gen_range(0.0..1.0), rng.gen_range(0.0..1.0));
+                to_color(i as f32 + di, j as f32 + dj)
+            })
+            .into_iter()
+            .averaged()
+    }
 }
