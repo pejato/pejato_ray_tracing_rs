@@ -14,6 +14,11 @@ impl Color {
     pub fn new(r: f32, g: f32, b: f32) -> Self {
         Self(Vec3::new(r, g, b))
     }
+
+    pub fn gamma_corrected(self) -> Self {
+        // Raise color to power 1/gamma, where gamma == 2
+        Color::new(self.0.x.sqrt(), self.0.y.sqrt(), self.0.z.sqrt())
+    }
 }
 
 // MARK: - Color + Display

@@ -2,6 +2,7 @@ use std::fmt::Display;
 
 use auto_ops::{impl_op, impl_op_ex, impl_op_ex_commutative};
 use derive_more::{Add, AddAssign, Sub, SubAssign};
+use rand::{rngs::StdRng, Rng, SeedableRng};
 mod tests;
 
 // MARK: - Data
@@ -18,6 +19,22 @@ pub struct Vec3 {
 impl Vec3 {
     pub fn new(a: f32, b: f32, c: f32) -> Self {
         Self { x: a, y: b, z: c }
+    }
+
+    pub fn rand_in_unit_sphere() -> Self {
+        // Again, this should probably use DI.
+        let mut rng = StdRng::seed_from_u64(133);
+        loop {
+            let vec = Vec3::new(
+                rng.gen_range(-1.0..=1.0),
+                rng.gen_range(-1.0..=1.0),
+                rng.gen_range(-1.0..=1.0),
+            );
+            if vec.dot(vec) >= 1.0 {
+                continue;
+            }
+            return vec;
+        }
     }
 
     pub fn unit(self) -> Self {
