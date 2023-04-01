@@ -16,7 +16,7 @@ fn ray_color<T: Hittable + ?Sized>(ray: Ray, world: &T, depth: i32) -> Color {
     }
     match world.hit(&ray, 0.001..) {
         Some(hit_data) => {
-            let rand_unit = Vec3::rand_in_unit_sphere();
+            let rand_unit = Vec3::rand_in_unit_sphere().unit();
             let target: Vec3 = Vec3::from(hit_data.point) + hit_data.normal + rand_unit;
             // Recursion! This simulates repeated bouncing.
             0.5 * ray_color(
