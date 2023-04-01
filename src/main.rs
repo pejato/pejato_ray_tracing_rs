@@ -113,7 +113,6 @@ fn get_sampled_color(
                 let (di, dj) = (rng.gen_range(-0.5..0.5), rng.gen_range(-0.5..0.5));
                 to_color(i as f32 + di, j as f32 + dj)
             })
-            .into_iter()
             .averaged()
             .gamma_corrected()
     }
