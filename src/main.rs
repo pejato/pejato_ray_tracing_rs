@@ -1,6 +1,7 @@
 mod ray_tracing;
 
 use ray_tracing::color::Averageable;
+use ray_tracing::vec3::Vec3;
 use ray_tracing::{color::*, hittable::Hittable, ray::Ray};
 
 use crate::ray_tracing::{camera::Camera, point::Point, sphere::Sphere};
@@ -9,9 +10,21 @@ fn header(width: i32, height: i32) -> String {
     format!("P3\n{width} {height}\n255")
 }
 
-fn ray_color<T: Hittable + ?Sized>(ray: Ray, world: &T) -> Color {
-    match world.hit(&ray, 0.0..) {
-        Some(hit_data) => 0.5 * (Color::from(hit_data.normal) + Color::new(1.0, 1.0, 1.0)),
+fn ray_color<T: Hittable + ?Sized>(ray: Ray, world: &T, depth: i32) -> Color {
+    if depth <= 0 {
+        return Color::new(0.0, 0.0, 0.0);
+    }
+    match world.hit(&ray, 0.001..) {
+        Some(hit_data) => {
+            let rand_unit = Vec3::rand_in_unit_sphere().unit();
+            let target: Vec3 = Vec3::from(hit_data.point) + hit_data.normal + rand_unit;
+            // Recursion! This simulates repeated bouncing.
+            0.5 * ray_color(
+                Ray::new(hit_data.point, target - hit_data.point.into()),
+                world,
+                depth - 1,
+            )
+        }
         None => {
             let unit_dir = ray.dir.unit();
             let t = 0.5 * (unit_dir.y + 1.0);
@@ -30,6 +43,8 @@ fn main() {
     let samples_per_pixel = 100;
     // Use a fixed seed for reproducibility. This could be handled with proper DI but I don't care tbh.
     let mut rng = StdRng::seed_from_u64(143);
+    // ray_color is recursive and we don't want to blow the stack
+    let max_bounce_depth = 50;
 
     // World
 
@@ -57,6 +72,7 @@ fn main() {
         eprintln!("Lines remaining {j}");
         for i in 0..image_width {
             let color = get_sampled_color(
+                max_bounce_depth,
                 samples_per_pixel,
                 &mut rng,
                 i,
@@ -73,6 +89,7 @@ fn main() {
 }
 
 fn get_sampled_color(
+    max_depth: i32,
     samples_per_pixel: i32,
     rng: &mut StdRng,
     i: i32,
@@ -86,17 +103,17 @@ fn get_sampled_color(
         let u = i / (image_width - 1) as f32;
         let v = j / (image_height - 1) as f32;
         let ray = camera.ray_at(u, v);
-        ray_color(ray, world.as_slice())
+        ray_color(ray, world.as_slice(), max_depth)
     };
     if samples_per_pixel <= 1 {
-        to_color(i as f32, j as f32)
+        to_color(i as f32, j as f32).gamma_corrected()
     } else {
         (0..samples_per_pixel)
             .map(|_| {
                 let (di, dj) = (rng.gen_range(-0.5..0.5), rng.gen_range(-0.5..0.5));
                 to_color(i as f32 + di, j as f32 + dj)
             })
-            .into_iter()
             .averaged()
+            .gamma_corrected()
     }
 }

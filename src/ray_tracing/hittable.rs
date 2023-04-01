@@ -37,6 +37,8 @@ impl HitData {
     }
 }
 
+// TODO: It feels like there should be a way to provide a common impl for all of these types..
+
 // MARK: - &[T: Hittable] + Hittable
 
 impl<T> Hittable for &[T]
@@ -47,7 +49,9 @@ where
     where
         Interval: std::ops::RangeBounds<f32> + Clone,
     {
-        self.iter().find_map(|h| h.hit(ray, t_interval.clone()))
+        self.iter()
+            .filter_map(|h| h.hit(ray, t_interval.clone()))
+            .min_by(|h0, h1| h0.t.partial_cmp(&h1.t).unwrap())
     }
 }
 
@@ -59,7 +63,9 @@ where
     where
         Interval: std::ops::RangeBounds<f32> + Clone,
     {
-        self.iter().find_map(|h| h.hit(ray, t_interval.clone()))
+        self.iter()
+            .filter_map(|h| h.hit(ray, t_interval.clone()))
+            .min_by(|h0, h1| h0.t.partial_cmp(&h1.t).unwrap())
     }
 }
 
@@ -73,6 +79,8 @@ where
     where
         Interval: std::ops::RangeBounds<f32> + Clone,
     {
-        self.iter().find_map(|h| h.hit(ray, t_interval.clone()))
+        self.iter()
+            .filter_map(|h| h.hit(ray, t_interval.clone()))
+            .min_by(|h0, h1| h0.t.partial_cmp(&h1.t).unwrap())
     }
 }
