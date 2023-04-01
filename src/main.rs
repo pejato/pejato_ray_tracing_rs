@@ -40,7 +40,7 @@ fn main() {
     let aspect_ratio: f32 = 16.0 / 9.0;
     let (image_width, image_height) = (400, (400.0 / aspect_ratio).trunc() as i32);
     // Anti-aliasing
-    let samples_per_pixel = 10;
+    let samples_per_pixel = 100;
     // Use a fixed seed for reproducibility. This could be handled with proper DI but I don't care tbh.
     let mut rng = StdRng::seed_from_u64(143);
     // ray_color is recursive and we don't want to blow the stack

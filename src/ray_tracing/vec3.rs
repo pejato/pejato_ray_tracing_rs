@@ -2,7 +2,7 @@ use std::fmt::Display;
 
 use auto_ops::{impl_op, impl_op_ex, impl_op_ex_commutative};
 use derive_more::{Add, AddAssign, Sub, SubAssign};
-use rand::{rngs::StdRng, Rng, SeedableRng};
+use rand::Rng;
 mod tests;
 
 // MARK: - Data
@@ -23,7 +23,7 @@ impl Vec3 {
 
     pub fn rand_in_unit_sphere() -> Self {
         // Again, this should probably use DI.
-        let mut rng = StdRng::seed_from_u64(133);
+        let mut rng = rand::thread_rng();
         loop {
             let vec = Vec3::new(
                 rng.gen_range(-1.0..=1.0),
